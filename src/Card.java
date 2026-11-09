@@ -1,32 +1,76 @@
+
 public class Card
 {
-    public enum Suit {
-        HEARTS, DIAMONDS, CLUBS, SPADES
+
+    // -------------------------------------------------------------------------
+    /**
+     *  the different suits in a deck of cards
+     * 
+     *  @author michaela
+     *  @version Nov 9, 2026
+     */
+    public enum Suit
+    {
+
+        /**
+         * ♥️
+         */
+        HEARTS,
+        /**
+         * ♦️
+         */
+        DIAMONDS,
+        /**
+         * ♣️
+         */
+        CLUBS,
+        /**
+         * ♠️
+         */
+        SPADES
     }
 
-    public enum Rank {
-        TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
-        JACK, QUEEN, KING, ACE
+
+ 
+
+    private final Suit suit;
+    private final int rank;
+     
+
+    public Card(Suit suit, int rank)
+    {
+        
+        this.suit = suit;
+        this.rank = rank;
     }
+
+
+    // ~Public Methods ........................................................
     
-    //~ Fields ................................................................
-    Private final Suit suit;
-    Private final Rank value;
-    //~ Constructors ..........................................................
+    // ----------------------------------------------------------
+    /**
+     * Place a description of your method here.
+     * @return suit
+     */
     
-    
-    //~Public  Methods ........................................................
-    public Suit getSuit() {
+
+
+    @Override
+    public String toString()
+    {
+        return rank + " of " + suit;
+    }
+
+
+    public Suit getSuit()
+    {
         return suit;
     }
 
-    public Rank getRank() {
-        return value;
+
+    public int getRank()
+    {
+        return rank;
     }
-    
-    @Override
-    public String toString() {
-        return value + " of " + suit;
-    }
-    
+
 }

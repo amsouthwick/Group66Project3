@@ -1,3 +1,5 @@
 /SessionStats.class
 /PlayerAction.class
 /PlayerActionTest.class
+/HandEvaluator.class
+/HandEvaluator$Score.class

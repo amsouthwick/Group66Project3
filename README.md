@@ -8,7 +8,7 @@
 | `Player.java` | Michaela | Wrote fields and methods, managed chips, hand, and fold state. |
 | `SessionStats.java` | Michaela | Wrote tracking logic for wins, losses, and total gain. |
 | `HandEvaluator.java` | Michaela | Wrote method signatures and outlined poker hand ranking rules. |
-| `LinkedQueue.java` | Aidan | Engineered custom queue structure, GenAI-assisted Javadoc & boundary checks. |
+| `LinkedQueue.java` | Aidan | wrote custom queue structure, GenAI-assisted Javadoc & boundary checks. |
 | `PlayerAction.java` | Aidan | Wrote action rules and validation logic for betting/folding. |
 | `GameSnapshot.java` | Will | Wrote immutable state fields and unmodifiable list safeguards. |
 | `PokerApp.java` | Will | Wrote console UI, formatted snapshot rendering and text output. |

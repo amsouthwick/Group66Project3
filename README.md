@@ -25,7 +25,7 @@
 ### Next Steps
 Based on our recent testing and review of the MVP, we have adjusted our scope and prioritized the following next steps:
 * **AI Logic Overhaul:** We will upgrade `ComputerAction` so the bot makes independent, varied decisions based on game state rather than simply mimicking the player's moves.
-* **Output Formatting:** We will rewrite the text output for `ComputerAction` to ensure it looks clean, human-readable, and fits naturally with the game's UI rather than appearing AI-generated.
+* **Output Formatting:** We will rewrite the text output for `ComputerAction` to ensure it looks clean and fits naturally with the game's UI rather than appearing AI-generated.
 * **Game Mechanics & Balancing:** We will adjust the starting chip counts to better balance the pacing of the game.
 * **Pot Splits:** We will implement pot-splitting logic to accurately handle ties and shared winnings during the showdown phase.
 * **Adding Blackjack:** We are exploring the potential addition of Blackjack as a secondary game mode within the Casino Practice application.
@@ -34,8 +34,7 @@ Based on our recent testing and review of the MVP, we have adjusted our scope an
 ### Reflection
 
 **What changed from our specification**
-While building the MVP, we realized our original design risked creating bloated controller classes. To fix this, we introduced two new structural components not explicitly detailed in our initial spec: `PlayerAction` and `GameSnapshot`. `PlayerAction` was created to isolate poker rule validation (checking, betting limits) away from the main `GameHandler`. We also officially revised our project scope to focus entirely on perfecting the Texas Hold'em mechanics before attempting to add Blackjack. 
-
+Very little changed from our original specification. Our only minor adjustment was shifting the betting rule validation (like checking if a player has enough chips to raise) out of the main `GameHandler` and into a dedicated `PlayerAction` helper object. This was a small refactoring choice simply to keep the controller code cleaner and easier to read, but the overall MVC architecture remained exactly as we originally planned.
 **Whether the Model really stood alone**
 Yes, our Model is strictly isolated from the View. We proved this by writing comprehensive JUnit 5 test suites (`LinkedQueueTest`, `PlayerActionTest`, `ModelTests`) that validate game rules, state changes, and boundary exceptions entirely without the UI. Furthermore, we enforced this boundary by using `GameSnapshot`. By passing data to the UI using `Collections.unmodifiableList`, we mathematically guaranteed that the View (`PokerApp`) cannot mutate the Model's internal state.
 

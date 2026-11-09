@@ -7,7 +7,7 @@ import java.util.List;
 public class PokerApp
 {
     /**
-     * Starts the console application. The controller handles setup and play.
+     * Starts the console application
      * @param args command-line arguments (unused)
      */
     public static void main(String[] args)
@@ -17,7 +17,6 @@ public class PokerApp
         controller.startGameLoop();
     }
 
-    /** Prints a short explanation of this version's rules. */
     public void showWelcome()
     {
         System.out.println("Welcome to Casino Practice - Texas Hold'em!");
@@ -26,10 +25,6 @@ public class PokerApp
         System.out.println("Type quit at any prompt to stop playing.");
     }
 
-    /**
-     * Displays only the information supplied by the snapshot.
-     * @param snapshot a read-only copy of the game state
-     */
     public void render(GameSnapshot snapshot)
     {
         System.out.println();
@@ -56,10 +51,6 @@ public class PokerApp
         }
     }
 
-    /**
-     * Prints an input prompt without reading the answer.
-     * @param prompt the question or instruction to display
-     */
     public void showPrompt(String prompt)
     {
         System.out.print(prompt);
@@ -67,7 +58,7 @@ public class PokerApp
     }
 
     /**
-     * Prints an informational message.
+     * Prints an informational message
      * @param message text to display
      */
     public void showMessage(String message)
@@ -76,7 +67,7 @@ public class PokerApp
     }
 
     /**
-     * Prints an input error from the controller or model.
+     * Prints an input error from the controller or model
      * @param message explanation of the problem
      */
     public void showError(String message)
@@ -85,7 +76,7 @@ public class PokerApp
     }
 
     /**
-     * Describes a completed move. This only formats an action already taken.
+     * Describes a completed move
      * @param name the player's name
      * @param action the action taken
      * @param committed new chips added to the pot
@@ -108,7 +99,7 @@ public class PokerApp
     }
 
     /**
-     * Displays the winners already chosen by the model.
+     * Displays the winners already chosen by the model
      * @param names winner names, including winners of separate side pots
      * @param previousPot pot size before the hand was paid out
      */
@@ -126,7 +117,7 @@ public class PokerApp
     }
 
     /**
-     * Displays results for completed hands in the current session.
+     * Displays results for completed hands in the current session
      * @param snapshot a snapshot containing the session results
      */
     public void showSessionSummary(GameSnapshot snapshot)

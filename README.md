@@ -29,3 +29,18 @@ Based on our recent testing and review of the MVP, we have adjusted our scope an
 * **Game Mechanics & Balancing:** We will adjust the starting chip counts to better balance the pacing of the game.
 * **Pot Splits:** We will implement pot-splitting logic to accurately handle ties and shared winnings during the showdown phase.
 * **Adding Blackjack:** We are exploring the potential addition of Blackjack as a secondary game mode within the Casino Practice application.
+
+---
+### Reflection
+
+**What changed from our specification**
+While building the MVP, we realized our original design risked creating bloated controller classes. To fix this, we introduced two new structural components not explicitly detailed in our initial spec: `PlayerAction` and `GameSnapshot`. `PlayerAction` was created to isolate poker rule validation (checking, betting limits) away from the main `GameHandler`. We also officially revised our project scope to focus entirely on perfecting the Texas Hold'em mechanics before attempting to add Blackjack. 
+
+**Whether the Model really stood alone**
+Yes, our Model is strictly isolated from the View. We proved this by writing comprehensive JUnit 5 test suites (`LinkedQueueTest`, `PlayerActionTest`, `ModelTests`) that validate game rules, state changes, and boundary exceptions entirely without the UI. Furthermore, we enforced this boundary by using `GameSnapshot`. By passing data to the UI using `Collections.unmodifiableList`, we mathematically guaranteed that the View (`PokerApp`) cannot mutate the Model's internal state.
+
+**What happened to our unknowns**
+Our biggest unknowns were technical integration and version control collaboration. We were unsure how to smoothly combine four separate Eclipse workspaces. We successfully conquered this by learning how to generate GitHub Personal Access Tokens for Eclipse and safely resolving "non-fast-forward" merge conflicts through manual fetching and merging. On the code side, our unknowns regarding how to handle the deck and turn order were resolved by building the custom generic `LinkedQueue`.
+
+**What doesn't work yet**
+As of this deliverable, a few mechanics still need refinement. Our `ComputerAction` AI is currently too simplistic and tends to just mimic the player rather than making independent, varied decisions based on pot odds. The text output formatting for these actions feels clunky and needs to be rewritten to look natural. Mechanically, we still need to implement pot-splitting logic for when two players have the exact same winning hand at showdown, and we need to tweak the starting chip counts for better game balance.

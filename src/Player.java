@@ -131,4 +131,52 @@ public class Player
         return fold;
     }
 
+    /**
+     * Sets the player's chip count after a bet, payout, or reset.
+     * @param chips the new chip count, which cannot be negative
+     */
+    public void setChips(int chips)
+    {
+        if (chips < 0)
+        {
+            throw new IllegalArgumentException("Chips cannot be negative.");
+        }
+        chipValue = chips;
+    }
+
+
+    /**
+     * Adds one of the player's two hole cards.
+     * @param card the card to add
+     */
+    public void addCard(Card card)
+    {
+        if (card == null)
+        {
+            throw new IllegalArgumentException("Card cannot be null.");
+        }
+        if (hand.size() == 2)
+        {
+            throw new IllegalStateException("The player already has two cards.");
+        }
+        hand.add(card);
+    }
+
+
+    /** Removes the previous hand's cards. */
+    public void clearHand()
+    {
+        hand.clear();
+    }
+
+
+    /**
+     * Returns the cards for hand evaluation without changing getHand().
+     * @return a copy of the player's cards
+     */
+    public ArrayList<Card> getCards()
+    {
+        return new ArrayList<Card>(hand);
+    }
+
 }

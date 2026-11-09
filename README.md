@@ -15,3 +15,10 @@ PokerApp.java	Glenn	Wrote console UI, formatted snapshot rendering.
 LinkedQueueTest.java	Aidan	GenAI-assisted writing of boundary checks.
 GameSnapshotTest.java	Aidan	GenAI-assisted writing of immutability tests.
 PlayerActionTest.java	Aidan	GenAI-assisted writing of rule validation tests.
+
+next steps:
+ the computer action implemented fully so it doesn't just mimic palyer
+ change the print statement in the UI class because they are AI and poorly formatted
+ Change the chip count to not be 1000 for each player, implement chip splitting. 
+ possibly add blackjack
+ 

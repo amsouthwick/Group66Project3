@@ -113,10 +113,11 @@ public class Player
     // ----------------------------------------------------------
     /**
      * lets the player fold
+     * @param set 
      */
-    public void fold()
+    public void setFolded(Boolean set)
     {
-        this.fold = true;
+        this.fold = set;
     }
 
 
@@ -125,7 +126,7 @@ public class Player
      * checks if player has folded
      * @return fold
      */
-    public boolean folded()
+    public boolean isFolded()
     {
         return fold;
     }

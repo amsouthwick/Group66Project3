@@ -1,3 +1,7 @@
 /SessionStats.class
 /PlayerAction.class
 /PlayerActionTest.class
+/GameHandler.class
+/HandEvaluator.class
+/PokerApp.class
+/PokerController.class

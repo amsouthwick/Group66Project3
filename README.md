@@ -24,11 +24,11 @@
 
 ### Next Steps
 Based on our recent testing and review of the MVP, we have adjusted our scope and prioritized the following next steps:
-* **AI Logic Overhaul:** We will upgrade `ComputerAction` so the bot makes independent, varied decisions based on game state rather than simply mimicking the player's moves.
-* **Output Formatting:** We will rewrite the text output for `ComputerAction` to ensure it looks clean and fits naturally with the game's UI rather than appearing AI-generated.
+* **Bot Logic:** `ComputerAction` is not perfect the bots fold too often.
+* * **Connect Blackjack and Poker** right now they are separate packages, and code reusability is non existent.
+* **Output Formatting:** We still need to rewrite the text output for our UI class to ensure it looks clean and fits naturally with the game's UI rather than appearing AI-generated.
 * **Game Mechanics & Balancing:** We will adjust the starting chip counts to better balance the pacing of the game.
-* **Pot Splits:** We will implement pot-splitting logic to accurately handle ties and shared winnings during the showdown phase.
-* **Adding Blackjack:** We are exploring the potential addition of Blackjack as a secondary game mode within the Casino Practice application.
+* **Adding Niche Blackjack Features:** Doubling down and splitting need to be added.
 
 ---
 ### Reflection

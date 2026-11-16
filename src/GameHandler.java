@@ -1,3 +1,5 @@
+package casinoApp;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,10 +15,12 @@ public class GameHandler
     private final LinkedQueue<Card> deckQueue;
     private final ArrayList<Card> communityCards;
     private final HandEvaluator evaluator;
+    private final ComputerAction computerAction;
     private final int startingChips;
 
     private final int[] roundBets;
     private final int[] handBets;
+    private final int[] aggressiveActions;
     private SessionStats stats;
     private int pot;
     private int currentBetToMatch;
@@ -68,8 +72,10 @@ public class GameHandler
         deckQueue = new LinkedQueue<Card>();
         communityCards = new ArrayList<Card>();
         evaluator = new HandEvaluator();
+        computerAction = new ComputerAction();
         roundBets = new int[players.size()];
         handBets = new int[players.size()];
+        aggressiveActions = new int[players.size()];
         resetState();
     }
 
@@ -167,6 +173,7 @@ public class GameHandler
         for (int i = 0; i < players.size(); i++)
         {
             roundBets[i] = 0;
+            aggressiveActions[i] = 0;
             Player player = players.get(i);
             if (!player.isFolded() && player.getChips() > 0)
             {
@@ -247,6 +254,7 @@ public class GameHandler
         if (increasedBet)
         {
             currentBetToMatch = roundBets[index];
+            aggressiveActions[index]++;
         }
 
         turnQueue.dequeue();
@@ -312,24 +320,61 @@ public class GameHandler
     }
 
     /**
-     * CHANGE THIS LATER when we have CopmuterAction
+     * Asks ComputerAction for a move, then applies the normal game rules.
      * @param player the computer whose turn it is
+     * @return the action actually taken, so the view can describe it correctly
      */
-    public void takeComputerTurn(Player player)
+    public String takeComputerTurn(Player player)
     {
         requireCurrentPlayer(player);
         if (player.isHuman())
         {
             throw new IllegalArgumentException("This player is not a computer.");
         }
-        if (getAmountToCall(player) == 0)
+        List<Player> remaining = getPlayersStillInHand();
+        int[] aggression = new int[remaining.size() - 1];
+        int[] callCosts = new int[aggression.length];
+        int[] potAdds = new int[aggression.length];
+        int ownCall = Math.min(getAmountToCall(player), player.getChips());
+        int contributionLimit = handBets[players.indexOf(player)] + ownCall;
+        int opponent = 0;
+        boolean everyoneCanFold = true;
+        for (Player other : remaining)
         {
-            applyAction(player, "check", 0);
+            if (other != player)
+            {
+                int index = players.indexOf(other);
+                aggression[opponent] = aggressiveActions[index];
+                callCosts[opponent] = Math.min(getAmountToCall(other), other.getChips());
+                // Extra side-pot chips above our contribution cannot be won.
+                int roomInPot = Math.max(0, contributionLimit - handBets[index]);
+                potAdds[opponent] = Math.min(callCosts[opponent], roomInPot);
+                opponent++;
+                if (other.getChips() == 0)
+                {
+                    everyoneCanFold = false;
+                }
+            }
         }
-        else
+        String action = computerAction.chooseAction(player, communityCards,
+            getAvailablePot(player), getAmountToCall(player), aggression,
+            callCosts, potAdds, everyoneCanFold, getLegalActionsFor(player));
+        applyAction(player, action, computerAction.getBetAmount());
+        return action;
+    }
+
+    // Do not tempt a short stack with side-pot chips it cannot win.
+    private int getAvailablePot(Player player)
+    {
+        int index = players.indexOf(player);
+        int callCost = Math.min(getAmountToCall(player), player.getChips());
+        int contributionLimit = handBets[index] + callCost;
+        int available = 0;
+        for (int contribution : handBets)
         {
-            applyAction(player, "call", 0);
+            available += Math.min(contribution, contributionLimit);
         }
+        return available;
     }
 
     /**
@@ -479,6 +524,7 @@ public class GameHandler
             roundBets[i] = 0;
             handBets[i] = 0;
             turnQueue.enqueue(player);
+            aggressiveActions[i] = 0;
         }
         communityCards.clear();
         stats = new SessionStats();
@@ -503,9 +549,106 @@ public class GameHandler
         return players.get(0).getChips() > 0 && fundedPlayers >= 2;
     }
 
+    /**
+     * Copies the current display information into a simple data container.
+     * @return a snapshot independent of later changes to the game
+     */
     public GameSnapshot getSnapshot()
     {
-        return new GameSnapshot(players, communityCards, pot);
+        GameSnapshot snapshot = new GameSnapshot();
+        snapshot.communityCards.addAll(communityCards);
+        snapshot.pot = pot;
+        snapshot.currentBet = currentBetToMatch;
+        snapshot.roundName = getRoundName();
+        snapshot.handInProgress = handInProgress;
+        snapshot.wins = stats.getWins();
+        snapshot.losses = stats.getlosses();
+        snapshot.totalGain = stats.getTotalGain();
+
+        for (int i = 0; i < players.size(); i++)
+        {
+            Player player = players.get(i);
+            snapshot.playerNames.add(player.getName());
+            snapshot.chipCounts.add(player.getChips());
+            snapshot.visibleHands.add(getVisibleHand(player));
+            snapshot.playerStatuses.add(getPlayerStatus(player));
+            if (handInProgress)
+            {
+                snapshot.roundBets.add(roundBets[i]);
+            }
+            else
+            {
+                snapshot.roundBets.add(0);
+            }
+        }
+
+        Player current = getCurrentPlayer();
+        if (current != null)
+        {
+            snapshot.currentPlayerName = current.getName();
+            snapshot.humanTurn = current.isHuman();
+            snapshot.amountToCall = getAmountToCall(current);
+            snapshot.legalActions.addAll(getLegalActionsFor(current));
+        }
+        return snapshot;
+    }
+
+    private String getRoundName()
+    {
+        if (round == -1)
+        {
+            return "Ready";
+        }
+        if (!handInProgress)
+        {
+            return "Hand complete";
+        }
+        String[] names = {"Preflop", "Flop", "Turn", "River"};
+        return names[round];
+    }
+
+    private String getVisibleHand(Player player)
+    {
+        if (player.getCards().isEmpty())
+        {
+            return "[]";
+        }
+        if (player.isHuman())
+        {
+            return player.getHand();
+        }
+        // Reveal computer cards only after a full-board showdown.
+        if (!handInProgress && communityCards.size() == 5
+            && !player.isFolded())
+        {
+            return player.getHand();
+        }
+        return "[hidden]";
+    }
+
+    private String getPlayerStatus(Player player)
+    {
+        if (player.getCards().isEmpty())
+        {
+            if (player.getChips() == 0)
+            {
+                return "Out";
+            }
+            return "Ready";
+        }
+        if (player.isFolded())
+        {
+            return "Folded";
+        }
+        if (!handInProgress)
+        {
+            return "Finished";
+        }
+        if (player.getChips() == 0)
+        {
+            return "All-in";
+        }
+        return "Playing";
     }
 
     public Player getCurrentPlayer()
@@ -589,4 +732,3 @@ public class GameHandler
         }
     }
 }
-

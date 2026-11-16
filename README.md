@@ -10,6 +10,7 @@
 | `GameHandler.java` | Will | Updated to include ComputerAction logic |
 | `ComputerAction.java` | Will | Wrote this class |
 | `ModelTests.java`      | Michaela | Wrote JUnit tests for Player state changes and SessionStats tracking. |
+| `CardBlackjack` `DealerBlackjack` `DeckBlackjack` `GameBlackjack` `HandBlackjack` `LinkedQueueBlackjack` `PlayerBlackjack` | Glenn Michaela Aidan | wrote and implemented classes for the Blackjack game
 
 ---
 
@@ -24,7 +25,7 @@ Based on our recent testing and review of the MVP, we have adjusted our scope an
 ---
 Reflection
 1. Design Absorption & Class Impact
-Classes Touched: GameSnapshot, PlayerAction, BlackjackGame, HandController, DealerBot, and underlying LinkedQueue data structures.
+Classes Touched: GameSnapshot,  Entire blackjack game, GameHandler, ComputerAction, Model tests.
 D3 Prediction vs. Reality: Our initial separation of game rules and view rendering matched predictions, allowing us to integrate Blackjack and bot logic cleanly. However, we were surprised by how tricky it was to tune autonomous bot thresholds; early iterations were overly timid, requiring several adjustments to their decision-making logic.
 2. Model/View Boundary & Layer Integrity
 Boundary Maintenance: The core game logic and bot decision trees remained strictly encapsulated within the model. The view only interacted via immutable GameSnapshot objects and event callbacks without learning internal model mechanics.

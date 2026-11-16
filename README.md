@@ -10,7 +10,6 @@
 | `GameHandler.java` | Will | Updated to include ComputerAction logic |
 | `ComputerAction.java` | Will | Wrote this class |
 | `ModelTests.java`      | Michaela | Wrote JUnit tests for Player state changes and SessionStats tracking. |
-| `CardBlackjack` `DealerBlackjack` `DeckBlackjack` `GameBlackjack` `HandBlackjack` `LinkedQueueBlackjack` `PlayerBlackjack` | Glenn Michaela Aidan | wrote and implemented classes for the Blackjack game
 
 ---
 
@@ -21,11 +20,21 @@ Based on our recent testing and review of the MVP, we have adjusted our scope an
 * **Output Formatting:** We still need to rewrite the text output for our UI class to ensure it looks clean and fits naturally with the game's UI rather than appearing AI-generated.
 * **Game Mechanics & Balancing:** We will adjust the starting chip counts to better balance the pacing of the game.
 * **Adding Niche Blackjack Features:** Doubling down and splitting need to be added.
+* **Adding Niche Blackjack Features:** Add testing for classes with missing tests
+
+We are fully committing to a fully working poker game with working bot logic. We are dropping the idea for a craps game.
+
+Our 3 minute demo will include a poker game demonstrating what the bots are capable of, and a blackjack game. We will show how if you lose 50 in blackjack, but gain 50 in Poker your overall session stats will not change.
+
+Will will complete ComupterAction
+Michaela will complete tests
+Aiden will merge the two packages to promote code reuseabilty
+Glenn will finalize blackjack features and help with testing for blackjack
 
 ---
 Reflection
 1. Design Absorption & Class Impact
-Classes Touched: GameSnapshot,  Entire blackjack game, GameHandler, ComputerAction, Model tests.
+Classes Touched: GameSnapshot, PlayerAction, BlackjackGame, HandController, DealerBot, and underlying LinkedQueue data structures.
 D3 Prediction vs. Reality: Our initial separation of game rules and view rendering matched predictions, allowing us to integrate Blackjack and bot logic cleanly. However, we were surprised by how tricky it was to tune autonomous bot thresholds; early iterations were overly timid, requiring several adjustments to their decision-making logic.
 2. Model/View Boundary & Layer Integrity
 Boundary Maintenance: The core game logic and bot decision trees remained strictly encapsulated within the model. The view only interacted via immutable GameSnapshot objects and event callbacks without learning internal model mechanics.

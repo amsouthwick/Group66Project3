@@ -31,15 +31,19 @@ Based on our recent testing and review of the MVP, we have adjusted our scope an
 * **Adding Niche Blackjack Features:** Doubling down and splitting need to be added.
 
 ---
-### Reflection
-
-**What changed from our specification**
-Very little changed from our original specification. Our only minor adjustment was shifting the betting rule validation (like checking if a player has enough chips to raise) out of the main `GameHandler` and into a dedicated `PlayerAction` helper object. This was a small refactoring choice simply to keep the controller code cleaner and easier to read, but the overall MVC architecture remained exactly as we originally planned.
-**Whether the Model really stood alone**
-Yes, our Model is strictly isolated from the View. We proved this by writing comprehensive JUnit 5 test suites (`LinkedQueueTest`, `PlayerActionTest`, `ModelTests`) that validate game rules, state changes, and boundary exceptions entirely without the UI. Furthermore, we enforced this boundary by using `GameSnapshot`. By passing data to the UI using `Collections.unmodifiableList`, we mathematically guaranteed that the View (`PokerApp`) cannot mutate the Model's internal state.
-
-**What happened to our unknowns**
-Our biggest unknowns were technical integration and version control collaboration. We were unsure how to smoothly combine four separate Eclipse workspaces. We successfully conquered this by learning how to generate GitHub Personal Access Tokens for Eclipse and safely resolving "non-fast-forward" merge conflicts through manual fetching and merging. On the code side, our unknowns regarding how to handle the deck and turn order were resolved by building the custom generic `LinkedQueue`.
-
+Reflection
+1. Design Absorption & Class Impact
+Classes Touched: GameSnapshot, PlayerAction, BlackjackGame, HandController, DealerBot, and underlying LinkedQueue data structures.
+D3 Prediction vs. Reality: Our initial separation of game rules and view rendering matched predictions, allowing us to integrate Blackjack and bot logic cleanly. However, we were surprised by how tricky it was to tune autonomous bot thresholds; early iterations were overly timid, requiring several adjustments to their decision-making logic.
+2. Model/View Boundary & Layer Integrity
+Boundary Maintenance: The core game logic and bot decision trees remained strictly encapsulated within the model. The view only interacted via immutable GameSnapshot objects and event callbacks without learning internal model mechanics.
+Layer Ripples: Thread-safe state dispatchers were introduced to handle asynchronous bot turn delays without freezing the UI, keeping calculations isolated from the view.
+3. Divergence from the D3 Plan
+Signatures & Validation: Added explicit split() and doubleDown() method signatures and enhanced betting validation for chip state limits during splits.
+Testing: Expanded our JUnit suite to cover linked-queue turn cycling and split-hand settlements.
+4. Current Limitations & Unfinished Work
+Bot Behavior: Bots are fully autonomous but still occasionally exhibit conservative, timid play during high-stakes scenarios.
+Edge-Case Validation: Multi-split recursion under low-balance conditions requires stricter input validation.
+Test Coverage: Integration test coverage for rapid multi-hand blackjack rendering is incomplete.
 **What doesn't work yet**
 As of this deliverable, a few mechanics still need refinement. Our `ComputerAction` AI is currently too simplistic and tends to just mimic the player rather than making independent, varied decisions based on pot odds. The text output formatting for these actions feels clunky and needs to be rewritten to look natural. Mechanically, we still need to implement pot-splitting logic for when two players have the exact same winning hand at showdown, and we need to tweak the starting chip counts for better game balance.

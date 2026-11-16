@@ -1,0 +1,136 @@
+package BlackJack;
+/**
+ * A blackjack player with a name, a hand, and a chip balance.
+ */
+public class Player
+{
+    private String name;
+    private Hand playersHand;
+    private int chips;
+    private int bet;
+    private boolean standing;
+    /**
+     * Creates a new player.
+     *
+     * @param name the player's name
+     * @param chips the starting chip balance
+     */
+    public Player(String name, int chips) {
+        this.name = name;
+        this.playersHand = new Hand();
+        this.bet = 0;
+        this.chips = chips;
+        this.standing = false;
+    }
+    /**
+     * @return the player's name
+     */
+    public String getName() {
+        return name;
+    }
+    /**
+     * @return the player's hand
+     */
+    public Hand getHand() {
+        return playersHand;
+    }
+    /**
+     * @return the player's chip balance
+     */
+    public int getChips() {
+        return chips;
+    }
+    /**
+     * @return the current bet
+     */
+    public int getBet() {
+        return bet;
+    }
+
+    /**
+     * The player holds and takes no more cards this round.
+     */
+    public void stand() {
+        standing = true;
+    }
+    /**
+     * @return true if the player has chosen to hold
+     */
+    public boolean isStanding() {
+        return standing;
+    }
+    /**
+     * Adds a card to the player's hand.
+     *
+     * @param card the card dealt to the player
+     */
+    public void recieveCard(Card card) {
+        playersHand.addCard(card);
+    }
+    /**
+     * Places a bet, taking the chips out of the balance.
+     *
+     * @param amount the amount to bet
+     * @return true if the bet was valid, false if it was too big or not positive
+     */
+    public boolean placeBet(int amount) {
+        if (amount <= 0 || amount > chips) {
+            return false;
+        }
+        bet = amount;
+        chips -= amount;
+        return true;
+    }
+    /**
+     * @return true if the player can still take a turn
+     */
+    public boolean actions() {
+        return !standing && !playersHand.Bust() && playersHand.getTotal() < 21;
+    }
+    /**
+     * Pays out a win: returns the bet plus an equal amount.
+     */
+    public void win() {
+        chips += bet*2;
+        bet = 0;
+    }
+    /**
+     * Pays out a blackjack 1.5 times the bet.
+     */
+    public void blackJackWin() {
+        chips += bet + (bet * 3)/ 2;
+        bet = 0;
+    }
+    /**
+     * Returns the bet to the player after a tie.
+     */
+    public void push() {
+        chips += bet;
+        bet = 0;
+    }
+    /**
+     * The bet was already taken out when placed, so a loss just clears it.
+     */
+    public void lose() {
+        bet = 0;
+    }
+    /**
+     * Player busts
+     * @return true is player busts
+     */
+    public boolean Busted() {
+        return playersHand.Bust();
+    }
+    /**
+     * Empties the hand and clears the standing flag for a new round.
+     */
+    public void resetHand() {
+        playersHand.clear();
+    }
+    
+    @Override
+    public String toString()
+    {
+        return name + ": " + playersHand + " | chips: " + chips;
+    }
+}

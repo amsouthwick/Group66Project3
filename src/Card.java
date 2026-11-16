@@ -63,7 +63,8 @@ public class Card
 
     // ----------------------------------------------------------
     /**
-     * Place a description of your method here.
+     * returns a string of card name in format of
+     * "RANK" of "SUIT"
      * 
      * @return suit
      */
@@ -97,7 +98,7 @@ public class Card
 
     // ----------------------------------------------------------
     /**
-     * Place a description of your method here.
+     * gets the suit of the card
      * 
      * @return suit
      */
@@ -109,7 +110,7 @@ public class Card
 
     // ----------------------------------------------------------
     /**
-     * Place a description of your method here.
+     * get number value of rank
      * 
      * @return rank
      */

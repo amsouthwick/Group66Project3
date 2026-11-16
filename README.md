@@ -4,21 +4,12 @@
 ### Attribution Table
 
 | Class / Test File | Team Member(s) | Contribution Details |
-| `Card.java` | Michaela | Wrote core class logic, established immutable suit and rank fields. |
-| `Player.java` | Michaela | Wrote fields and methods, managed chips, hand, and fold state. |
-| `SessionStats.java` | Michaela | Wrote tracking logic for wins, losses, and total gain. |
-| `HandEvaluator.java` | Michaela | Wrote method signatures and outlined poker hand ranking rules. |
-| `LinkedQueue.java` | Aidan | wrote custom queue structure, GenAI-assisted Javadoc & boundary checks. |
-| `PlayerAction.java` | Aidan | Wrote action rules and validation logic for betting/folding. |
-| `GameSnapshot.java` | Will | Wrote immutable state fields and unmodifiable list safeguards. |
-| `PokerApp.java` | Will | Wrote console UI, formatted snapshot rendering and text output. |
-| `GameHandler.java` | Will | Wrote model controller logic, dealt hands, and managed overall game state. |
-| `ComputerAction.java` | Will | Wrote basic AI decision logic for bot opponents. |
-| `PokerController.java` | Will | Wrote main game loop, input scanner, and format validation. |
-| `LinkedQueueTest.java` | Aidan | GenAI-assisted writing of JUnit 5 test cases and exception handling. |
-| `PlayerActionTest.java`| Aidan | GenAI-assisted writing of rule validation and chip limit tests. |
+| `HandEvaluator.java` | Michaela | Updated this logic |
+| `PlayerAction.java` | Aidan | Updated this logic|
+| `GameSnapshot.java` | Will | Entirely rewrote |
+| `GameHandler.java` | Will | Updated to include ComputerAction logic |
+| `ComputerAction.java` | Will | Wrote this class |
 | `ModelTests.java`      | Michaela | Wrote JUnit tests for Player state changes and SessionStats tracking. |
-| `ControllerTests.java` | Will | Wrote JUnit tests verifying game loop state and AI action boundaries. |
 
 ---
 
